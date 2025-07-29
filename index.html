@@ -3,22 +3,69 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Obfuscation Tool</title>
+
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap"
+            rel="stylesheet"
+        />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css"
+        />
+
+        <title>Cerastes</title>
 
         <style>
+            * {
+                box-sizing: border-box;
+                font-family: "Orbitron", sans-serif;
+            }
+
             body {
-                font-family: Arial, sans-serif;
-                background-color: #f4f4f4;
-                color: #333;
+                background-color: black;
+                color: #00ff00;
 
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+
+                gap: 1rem;
+            }
+
+            body,
+            h1 {
+                margin: 0;
+                padding: 0;
+            }
+
+            h1 {
+                font-size: 3rem;
+            }
+
+            textarea,
+            input {
+                font-family: "Courier New", Courier, monospace;
+                background-color: #333;
+                border: 1px solid #00ff00;
+                width: 700px;
+            }
+
+            a,
+            textarea,
+            input,
+            #output {
+                color: #00ff00;
             }
 
             textarea {
-                width: 700px;
                 height: 300px;
+            }
+
+            input {
+                padding: 10px;
+                border-radius: 5px;
             }
 
             form {
@@ -26,52 +73,80 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                gap: 10px;
+                gap: 0.75rem;
             }
 
             button {
                 padding: 10px 20px;
-                background-color: #007bff;
-                color: white;
+                background-color: #00ff00;
+                color: black;
                 border: none;
                 border-radius: 5px;
                 cursor: pointer;
             }
 
             button:hover {
-                background-color: #0056b3;
-            }
-
-            input {
-                width: 700px;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-                overflow-x: auto;
+                background-color: #fff;
             }
 
             p {
                 max-width: 700px;
                 text-align: center;
             }
+
+            span {
+                display: flex;
+                gap: 1rem;
+            }
+
+            a {
+                text-decoration: none;
+                font-size: 2rem;
+            }
+
+            a:hover {
+                color: #fff;
+            }
         </style>
     </head>
+
     <body>
         <form id="obfuscationForm">
-            <h1>Insert your code:</h1>
+            <h1>Cerastes</h1>
+
+            <span>
+                <a href="todo" title="Source Code">
+                    <i class="bi bi-github"></i>
+                </a>
+
+                <a href="todo" title="Buy me a coffee">
+                    <i class="bi bi-cup-hot"></i>
+                </a>
+            </span>
+
             <p>
+                <b>Cerastes</b> is a genus of small vipers, often hiding by
+                burying themselves in the sand. These are ambush predators that
+                lie buried in the sand, waiting for prey to pass by.
+                <br />
                 This tool generates an obfuscated version of your code using
-                XOR-based encryption. If you're using JavaScript, you can also
-                use the compiled injection snippet below. It dynamically inserts
-                the encrypted code into the DOM at runtime, making it invisible
-                to users inspecting the raw HTML.
+                simple XOR-based encryption. If you're using JavaScript, you can
+                also use the generated injection snippet below. It dynamically
+                inserts the encrypted code into the DOM at runtime.
             </p>
-            <textarea id="code" rows="20" cols="80"></textarea>
+
+            <textarea
+                id="code"
+                rows="20"
+                cols="80"
+                placeholder="alert('Boo! 👻')"
+            ></textarea>
+
             <button id="obfuscate">Obfuscate</button>
         </form>
 
         <div id="output">
-            <h1>Your output will be here</h1>
+            <h2>-Your output will be down here-</h2>
         </div>
 
         <script>
