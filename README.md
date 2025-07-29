@@ -8,7 +8,7 @@ Cerastes is a compact, single-file HTML tool that obfuscates your code using XOR
 
 Alongside, Cerastes creates a lightweight JavaScript snippet that automatically decrypts the code at runtime and injects it into the DOM.
 
-Like its namesake—the horned desert viper-Cerastes is small, stealthy, and strikes without being seen.
+Like its namesake-the horned desert viper-Cerastes is small, stealthy, and strikes without being seen.
 
 ## Example Output:
 
