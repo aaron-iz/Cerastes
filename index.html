@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Obfuscation Tool</title>
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                color: #333;
+
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            textarea {
+                width: 700px;
+                height: 300px;
+            }
+
+            form {
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+            }
+
+            button {
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+
+            input {
+                width: 700px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                overflow-x: auto;
+            }
+
+            p {
+                max-width: 700px;
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <form id="obfuscationForm">
+            <h1>Insert your code:</h1>
+            <p>
+                This tool generates an obfuscated version of your code using
+                XOR-based encryption. If you're using JavaScript, you can also
+                use the compiled injection snippet below. It dynamically inserts
+                the encrypted code into the DOM at runtime, making it invisible
+                to users inspecting the raw HTML.
+            </p>
+            <textarea id="code" rows="20" cols="80"></textarea>
+            <button id="obfuscate">Obfuscate</button>
+        </form>
+
+        <div id="output">
+            <h1>Your output will be here</h1>
+        </div>
+
+        <script>
+            const EncryptedPlaceholder = "DDD";
+            const KeyPlaceholder = "KKK";
+            const Template = `const d=${EncryptedPlaceholder};const k=${KeyPlaceholder};const s=document.createElement("script");const y=d.map((v,i)=>String.fromCharCode(v^k.charCodeAt(i%k.length))).join("");const z=new TextDecoder("utf-8").decode(Uint8Array.from(y,(c)=>c.charCodeAt(0)));s.innerHTML=z;document.body.appendChild(s);`;
+            const codeElement = document.getElementById("code");
+
+            function generateKey(length) {
+                let key = "";
+                while (key.length < length) {
+                    key += Math.random().toString(36).substring(2, 15);
+                }
+                return key.substring(0, length);
+            }
+
+            function encrypt(bytes, key) {
+                return bytes.map((byte, index) => byte ^ key.charCodeAt(index));
+            }
+
+            function createMiniHeading(text) {
+                const h = document.createElement("h3");
+                h.textContent = text;
+                return h;
+            }
+
+            function addElements(encrypted, key) {
+                const outputElement = document.getElementById("output");
+                outputElement.replaceChildren();
+
+                const keyElement = document.createElement("input");
+                keyElement.type = "text";
+                keyElement.value = key;
+                keyElement.id = "key";
+                keyElement.disabled = true;
+                keyElement.title = "Click to copy the key";
+                keyElement.onclick = function () {
+                    this.select();
+                    document.execCommand("copy");
+                    alert("Key copied to clipboard!");
+                };
+
+                const encryptedElement = document.createElement("textarea");
+                encryptedElement.id = "encrypted";
+                encryptedElement.rows = 20;
+                encryptedElement.cols = 80;
+                encryptedElement.value = encrypted;
+                encryptedElement.disabled = true;
+                encryptedElement.title = "Click to copy the encrypted code";
+                encryptedElement.onclick = function () {
+                    this.select();
+                    document.execCommand("copy");
+                    alert("Encrypted code copied to clipboard!");
+                };
+
+                const scriptCode = Template.replace(
+                    EncryptedPlaceholder,
+                    JSON.stringify(encrypted).substring(
+                        1,
+                        JSON.stringify(encrypted).length - 1
+                    )
+                ).replace(KeyPlaceholder, JSON.stringify(key));
+
+                const scriptElement = document.createElement("textarea");
+                scriptElement.id = "scriptCode";
+                scriptElement.rows = 20;
+                scriptElement.cols = 80;
+                scriptElement.value = scriptCode;
+                scriptElement.disabled = true;
+                scriptElement.title = "Click to copy the script code";
+                scriptElement.onclick = function () {
+                    this.select();
+                    document.execCommand("copy");
+                    alert("Script code copied to clipboard!");
+                };
+
+                outputElement.appendChild(createMiniHeading("Key:"));
+                outputElement.appendChild(keyElement);
+                outputElement.appendChild(createMiniHeading("Encrypted Code:"));
+                outputElement.appendChild(encryptedElement);
+                outputElement.appendChild(
+                    createMiniHeading("JS Injecting Code:")
+                );
+                outputElement.appendChild(scriptElement);
+            }
+
+            function obfuscate(e) {
+                e.preventDefault();
+
+                const code = codeElement.value;
+                if (!code || code.trim() === "") {
+                    alert("Please enter some code to obfuscate.");
+                    return;
+                }
+
+                const encode = new TextEncoder().encode(code);
+                const key = generateKey(encode.length);
+                const encrypted = JSON.stringify([...encrypt(encode, key)]);
+
+                addElements(encrypted, key);
+            }
+
+            document
+                .getElementById("obfuscationForm")
+                .addEventListener("submit", obfuscate);
+        </script>
+    </body>
+</html>
